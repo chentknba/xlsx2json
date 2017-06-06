@@ -45,6 +45,10 @@ func loadConf() error {
 	return nil
 }
 
+// row 0: identity
+// row 1: type declare
+// row 2: comment
+// row 3: data
 func gen(exel_name, dict_name string) {
 	defer wg.Done()
 
@@ -69,13 +73,6 @@ func gen(exel_name, dict_name string) {
 		fmt.Println("wrong fmt.")
 		return
 	}
-
-	// fmt.Printf("dict: %v, rows: %v\n", dict_name, nrows)
-
-	// row 0: identity
-	// row 1: type declare
-	// row 2: comment
-	// row 3: data
 
 	lbrace, rbrace := "{", "}"
 	lbraket, rbraket := "[", "]"
@@ -153,7 +150,6 @@ func gen(exel_name, dict_name string) {
 
 			if json_start {
 				json_content += "\r\n"
-
 				json_start = false
 			} else {
 				json_content += ","
@@ -170,7 +166,7 @@ func gen(exel_name, dict_name string) {
 
 	f, err := os.OpenFile(out, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
-		fmt.Println("open out file fail.")
+		fmt.Printf("open out file fail, err: %v\n", err)
 		return
 	}
 
@@ -179,7 +175,6 @@ func gen(exel_name, dict_name string) {
 	f.WriteString(json_content)
 
 	fmt.Printf("generate %v, rows %v\n", dict_name, nrows)
-
 }
 
 func main() {
@@ -190,7 +185,6 @@ func main() {
 
 	fmt.Printf("配置表路径: %v\n", execl_path)
 	fmt.Printf("生成json路径: %v\n", dict_path)
-	fmt.Printf("execl: %v\n", cfg["file"])
 
 	for dict_name, exel_name := range dict_cfg {
 		wg.Add(1)
