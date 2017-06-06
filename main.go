@@ -117,9 +117,9 @@ func gen(exel_name, dict_name string) {
 				text, _ := cell.String()
 
 				if text == "" {
-					if k == "int" {
+					if t == "int" {
 						text = "0"
-					} else if k == "float" {
+					} else if t == "float" {
 						text = "0.0"
 					}
 				}
@@ -193,4 +193,6 @@ func main() {
 	}
 
 	wg.Wait()
+
+	fmt.Printf("Done.\n")
 }
